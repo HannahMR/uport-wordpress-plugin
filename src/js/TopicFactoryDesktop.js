@@ -1,8 +1,8 @@
+//@flow
 import axios from 'axios'
 import Random from 'random-js'
 
 
-//@flow
 /**  @module wp-uport/TopicFactoryDesktop
   *  @description
   *  Manages the communication channel between the uport-connect library and a
@@ -38,17 +38,22 @@ function TopicFactoryDesktop (pollingInterval = 2000) {
           // json: true, json default response type in axios
           withCredentials: false,
           rejectUnauthorized: false
-        }.catch((err, res, body) => {
-          if (err) return cb(err)})
+        }.then(function(response) {
 
-
-        function (err, res, body) {
-          if (err) return cb(err)
-
-          if (cancelled()) {
+        }.then(cancelled() {
             clearInterval(interval)
             return cb(new Error('Request Cancelled'))
-          }
+          })
+          .catch((err, res, body) => {
+            if (err) return cb(err)})
+
+        // function (err, res, body) {
+        //   if (err) return cb(err)
+
+        // if (cancelled()) {
+        //   clearInterval(interval)
+        //   return cb(new Error('Request Cancelled'))
+        // }
 
           // parse response into raw account
           const data = body.message
@@ -77,17 +82,35 @@ function TopicFactoryDesktop (pollingInterval = 2000) {
    *
    *  @param    {String}     topicURL           url endpoint which to clear topic
    */
-  function clearTopic (topicURL) {
+  function clearTopic (topicURL, baseurl) {
     // should we add a function to remove this from JSONGraph?
-    axios({
-      method: 'delete',
-      url: topicURL,
-      withCredentials: false,
-      rejectUnauthorized: false
-      }).catch(function (error) {
-        console.log(error);
-    })
+    // axios({
+    //   method: 'delete',
+    //   url: topicURL,
+    //   withCredentials: false,
+    //   rejectUnauthorized: false
+    //   }).catch(function (error) {
+    //     console.log(error);
+    //     .then
+    // })
+    axios.delete(topicURL)
+      .then(console.log("Topic Deleted"))
+      .catch(function (error) {
+        console.log(error))
+      }
   }
+
+  // function newTopic (topicName, baseurl) {
+  //  let isCancelled = false
+  //  let topicID = Random.uuid4(Random.engines.mt19937().autoSeed())
+  //  let uri = chasquiUrl + topicID
+  //  axios({
+  //    method: 'get',
+  //    url: topicID
+  //    withCredentials: false,
+  //    rejectUnauthorized: false
+  //  }).then
+  // }
 
   /**
    *  Creates a topic and random url endpoint on the messaging server. Passes this
@@ -95,6 +118,7 @@ function TopicFactoryDesktop (pollingInterval = 2000) {
    *  mobile app at that url. Returns a promise which resolves a response or rejects
    *  an error (or timeout).
    *  this makes little sense to me, where is the PUT request to create the topic here?
+   *    so the PUT request is in the polling function.  this may be CRUD but it's ugly
    *
    *  @param    {String}     topicName     the topic you are waiting for a response
    *  @return   {Promise<Object, Error>}   a promise which resolves with a response or rejects with an error.
@@ -103,7 +127,7 @@ function TopicFactoryDesktop (pollingInterval = 2000) {
      // cleaner to do with axios
      let isCancelled = false
      let topicID = Random.uuid4(Random.engines.mt19937().autoSeed())
-     let url = chasquiUrl + topicID
+     let uri = chasquiUrl + topicID
 
      const topic = new Promise((resolve, reject) => {
        const cb = (error, response) => {
@@ -119,5 +143,8 @@ function TopicFactoryDesktop (pollingInterval = 2000) {
 
   return newTopic
 }
+
+
+
 
 export default TopicFactoryDesktop

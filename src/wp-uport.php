@@ -60,7 +60,7 @@ class NoPasswords {
 	 * need to add uport-connect stuff here
 	 */
 	private function load_dependencies() {
-		require_once( dirname( __FILE__ ) . '/libs/TimeOTP.inc' ); // replace with random-js
+		require_once( dirname( __FILE__ ) . '/libs/TimeOTP.inc' ); // not sure this is needed
 		require_once( dirname( __FILE__ ) . '/libs/phpqrcode.inc' );
 	}
 /**
@@ -71,6 +71,11 @@ class NoPasswords {
 define( 'PLUGIN_NAME_VERSION', '0.0.1' );
 
 // TODO: Generate WP REST endpoints for chasqui, infura, login stages
+// this is to be handled in js.  the only reason to use REST is in the case of
+// registration.  we can generate password and pass it to user
+// how to determine where to send?
+// how to deteremine registration flow??
+// first lets just get the first use case under wraps: a registered users
 add_action( 'rest_api_init', function () {
   register_rest_route( 'wp-uport/v1', '/topic/{topicID}'), array(
     'methods' => 'GET',
@@ -90,14 +95,16 @@ public function wp_qr_code_login_head() {
 
 	if ( $qrHash = $this->generateHash() ) {
 		// Enqueue script that creates and places QR-code on login page
-		wp_enqueue_script( 'qrLogin_js', plugins_url( '/js/qrLogin.js', __FILE__ ), array( 'jquery' ) );
+		wp_enqueue_script( '_js', plugins_url( '/js/uportWP.js', __FILE__ ), array( 'jquery' ) );
 		// Here we need to createid
 		wp_enqueue_script( $handle, $src = false, $deps = array(), $ver = false, $in_footer = false )
 		// here is the process to expose these values to js;  wp_localize_script( $handle, $name, $data )
-		wp_localize_script( 'qrLogin_js', 'qrLoginAjaxRequest', array(
+		// here we need to pass retrieved values from chasqui (via ipfs node)
+		// real work will be done in javascript other than $wpdb stuff
+		wp_localize_script( 'uportWP_js', 'uportWPAjaxRequest', array(
 				'ajaxurl'      => admin_url( 'admin-ajax.php' ),
 				'homeurl'      => preg_replace("(^https?://)", "//", get_home_url( null, "", "https" )),
-				'qrLoginNonce' => wp_create_nonce( 'qrLogin-nonce' ),
+				'uportWPNonce' => wp_create_nonce( 'uportWP-nonce' ),
 				'qrHash'       => $this->generateHash(),
 				'reloadNonce'  => wp_create_nonce( 'reload-nonce' )
 			)
@@ -106,7 +113,26 @@ public function wp_qr_code_login_head() {
 
 }
 
+private function uportWPDB_install() {
+	$uportWP_db_version = "0.0.1";
+	global $wpdb;
+	$table_name = $wpdb->base_prefix . $this->tbl_name;
+	$sql        = "CREATE TABLE $table_name (
+		id mediumint(9) NOT NULL AUTO_INCREMENT,
+		timestamp datetime DEFAULT '0000-00-00 00:00:00' NOT NULL,
+		hash text NOT NULL,
+		uname varchar(60) NOT NULL,
+		uIP VARCHAR(55) DEFAULT '' NOT NULL,
+		site VARCHAR(255) DEFAULT '' NOT NULL,
+		UNIQUE KEY id (id)
+	);";
 
+	require_once( ABSPATH . 'wp-admin/includes/upgrade.php' );
+	dbDelta( $sql );
+
+	update_option( "uportWP_db_version", $uportWP_db_version );
+
+}
 /**
  * The code that runs during plugin activation.
  * This action is documented in includes/class-uport-wordpress-plugin-activator.php
