@@ -38,9 +38,17 @@ function TopicFactoryDesktop (pollingInterval = 2000) {
           // json: true, json default response type in axios
           withCredentials: false,
           rejectUnauthorized: false
-        }.then(function(response) {
-
-        }.then(cancelled() {
+        }
+        .then(function(response) {
+          const data = body.message
+          try {
+            if (data.error) {
+              clearInterval(interval)
+              return cb(data.error)
+            }
+          }
+        }
+        .then(cancelled() {
             clearInterval(interval)
             return cb(new Error('Request Cancelled'))
           })

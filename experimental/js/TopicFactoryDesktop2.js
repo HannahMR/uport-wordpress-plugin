@@ -32,10 +32,10 @@ function TopicFactoryDesktop (pollingInterval = 2000) {
        .catch(function (error) {console.log(error)})
        }
 
-    var topic = AsyncPolling(function (end) {
+    var topic = AsyncPolling(function (end, newTopic) {
     // here we are polling chasqui for the return message
     return newTopic;
-    
+
     // Here I want to stop the polling:
     this.stop();
     end();
