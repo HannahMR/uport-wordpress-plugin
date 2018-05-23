@@ -5,7 +5,7 @@ import BrowserSyncPlugin  from 'browser-sync-webpack-plugin';
 import ZipPlugin          from 'zip-webpack-plugin';
 import webpack            from 'webpack';
 
-const isProd = process.env.NODE_ENV === 'development';
+const isProd = process.env.NODE_ENV === 'production';
 
 //////////////////////// FILEPATH ///////////////////////
 /////////////////////////////////////////////////////////
@@ -16,7 +16,7 @@ const buildFolder  = 'dist',
         build        : path.resolve(__dirname, buildFolder),
         src          : path.resolve(__dirname, sourceFolder),
         node_modules : path.resolve(__dirname, 'node_modules'),
-        index        : path.resolve(__dirname, `${sourceFolder}/js/index.js`),
+        index        : path.resolve(__dirname, `${sourceFolder}/js/login.js`),
         zipped       : path.join(__dirname, buildFolder),
 
       };
@@ -27,7 +27,6 @@ const buildFolder  = 'dist',
 const CopyWebpackPluginOptions = ([
   {from: path.resolve(__dirname, 'src/php') + '/**',
      to: buildFolder},
-
   {from: path.resolve(__dirname, 'src/wp-uport.php'),
      to: buildFolder},
    ],

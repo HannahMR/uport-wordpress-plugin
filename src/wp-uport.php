@@ -61,10 +61,10 @@ class NoPasswords {
 	 * Package dependencies
 	 * need to add uport-connect stuff here
 	 */
-	private function load_dependencies() {
-		require_once( dirname( __FILE__ ) . '/libs/TimeOTP.inc' ); // not sure this is needed
-		require_once( dirname( __FILE__ ) . '/libs/phpqrcode.inc' );
-	}
+	// private function load_dependencies() {
+	// 	require_once( dirname( __FILE__ ) . '/libs/TimeOTP.inc' ); // not sure this is needed
+	// 	require_once( dirname( __FILE__ ) . '/libs/phpqrcode.inc' );
+	// }
 /**
  * Currently plugin version.
  * Start at version 1.0.0 and use SemVer - https://semver.org
@@ -97,19 +97,19 @@ public function wp_qr_code_login_head() {
 
 	if ( $qrHash = $this->generateHash() ) {
 		// Enqueue script that creates and places QR-code on login page
-		wp_enqueue_script( '_js', plugins_url( '/js/index.js', __FILE__ ) );
-		wp_enqueue_script( $handle, $src = false, $deps = array(), $ver = false, $in_footer = false )
+		wp_enqueue_script( '_js', plugins_url( '/js/uport-wp.js', __FILE__ ), array( 'jquery' ) );
+		// wp_enqueue_script( $handle, $src = false, $deps = array(), $ver = false, $in_footer = false )
 		// here is the process to expose these values to js;  wp_localize_script( $handle, $name, $data )
 		// here we need to pass retrieved values from chasqui (via ipfs node)
 		// real work will be done in javascript other than $wpdb stuff
-		wp_localize_script( 'wp_uport_js', 'uportWPAjaxRequest', array(
-				'ajaxurl'      => admin_url( 'admin-ajax.php' ),
-				'homeurl'      => preg_replace("(^https?://)", "//", get_home_url( null, "", "https" )),
-				'uportWPNonce' => wp_create_nonce( 'uportWP-nonce' ),
-				'qrHash'       => $this->generateHash(),
-				'reloadNonce'  => wp_create_nonce( 'reload-nonce' )
-			)
-		);
+		// wp_localize_script( 'wp_uport_js', 'uportWPAjaxRequest', array(
+		// 		'ajaxurl'      => admin_url( 'admin-ajax.php' ),
+		// 		'homeurl'      => preg_replace("(^https?://)", "//", get_home_url( null, "", "https" )),
+		// 		'uportWPNonce' => wp_create_nonce( 'uportWP-nonce' ),
+		// 		'qrHash'       => $this->generateHash(),
+		// 		'reloadNonce'  => wp_create_nonce( 'reload-nonce' )
+		// 	)
+		// );
 	}
 
 }
