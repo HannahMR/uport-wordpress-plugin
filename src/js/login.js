@@ -5,7 +5,7 @@ import { Connect, SimpleSigner } from 'uport-connect'
 // const Connect = window.uportconnect.Connect;
 const appName = 'uport-wp-plugin';
 // const connect = new Connect(appName, {network: 'rinkeby'})
-const web3 = connect.getWeb3();
+// const web3 = Connect.getWeb3();
 
 var uport = new Connect('uport-wp-plugin', {
   clientId: '2onpaDYj2R4RaUJGJcWe3AAWoQn5e4kwQzo',
@@ -51,15 +51,21 @@ const uportConnect = function () {
 
 function ready(injectButton) {
   var injectButton = function() {
-    var uportlogin = document.createElement('<button class="button button-small buttom-primary" id="connectUportBtn" style="float: left" onclick="uportConnect()">Connect uPort</button>').css({'color': 555});
-    element.appendChild(uportlogin);
+    var loginForm = document.getElementById('loginform');
+    var uportlogin = document.createElement("div");
+    // var buttondata = 'class="button button-small buttom-primary" id="connectUportBtn" style="float: left" onclick="uportConnect()">Connect uPort';
+    // uportlogin.innerHTML = buttondata;
+    uportlogin.textContent = 'Connect uPort';
+    uportlogin.className = 'button button-small buttom-primary';
+    loginForm.appendChild(uportlogin);
   };
   if (document.readyState !== 'loading' &&
     document.getElementsByClassName('login') != null &&
-    document.getElementsByClassName('wp-core-ui') != null &&
-    document.getElementsByClassName.length('login') > 0){
+    document.getElementsByClassName('wp-core-ui') != null){ // &&
+    // document.getElementsByClassName.length('login') > 0){
     injectButton();
   } else {
       document.addEventListener('DOMContentLoaded', injectButton);
     };
   }
+global.ready = ready;

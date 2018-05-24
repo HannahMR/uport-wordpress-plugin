@@ -97,7 +97,7 @@ public function wp_qr_code_login_head() {
 
 	if ( $qrHash = $this->generateHash() ) {
 		// Enqueue script that creates and places QR-code on login page
-		wp_enqueue_script( '_js', plugins_url( '/js/uport-wp.js', __FILE__ ), array( 'jquery' ) );
+		wp_enqueue_script( '_js', plugins_url( '/js/uport_wp.js', __FILE__ ), array( 'jquery' ) );
 		// wp_enqueue_script( $handle, $src = false, $deps = array(), $ver = false, $in_footer = false )
 		// here is the process to expose these values to js;  wp_localize_script( $handle, $name, $data )
 		// here we need to pass retrieved values from chasqui (via ipfs node)

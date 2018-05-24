@@ -4,6 +4,8 @@ test/test.js
 resolve.plantuml
 resolve.png
 node_modules/
+dist/
+.gitignore
 =======
 uport-wp_notes.txt
 >>>>>>> origin/master
