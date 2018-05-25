@@ -4,7 +4,7 @@ test/test.js
 resolve.plantuml
 resolve.png
 node_modules/
-dist/
+experimental/
 .gitignore
 =======
 uport-wp_notes.txt
