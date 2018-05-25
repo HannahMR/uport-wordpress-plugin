@@ -1,12 +1,11 @@
 {
   "name": "wp-uport-plugin-alpha",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "bridge between uport and wordpress",
   "main": "main.js",
   "author": "raininja",
   "license": "MIT",
   "dependencies": {
-    "jquery": "^3.3.1",
     "uport-connect": "^0.7.3"
   },
   "devDependencies": {
