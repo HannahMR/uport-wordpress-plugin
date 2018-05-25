@@ -6,7 +6,8 @@
   "author": "raininja",
   "license": "MIT",
   "dependencies": {
-    "uport-connect": "^0.7.3"
+    "uport-connect": "^0.7.3",
+    "web3": "^1.0.0-beta.34"
   },
   "devDependencies": {
     "babel-cli": "^6.26.0",
@@ -23,7 +24,7 @@
     "flow-bin": "^0.71.0",
     "mocha": "^5.1.1",
     "path": "^0.12.7",
-    "webpack": "^4.6.0",
+    "webpack": "^4.8.3",
     "webpack-cli": "^2.1.3",
     "webpack-dev-server": "^3.1.4",
     "webpack-hot-middleware": "^2.22.1",

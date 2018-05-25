@@ -9,14 +9,14 @@
  * that starts the plugin.
  *
  * @link              https://github.com/raininja
- * @since             0.0.1
+ * @since             0.0.2
  * @package           Uport_Wordpress_Plugin
  *
  * @wordpress-plugin
  * Plugin Name:       Uport WordPress Plugin
  * Plugin URI:        https://github.com/uport-project/uport-wordpress-plugin
  * Description:       This is a short description of what the plugin does. It's displayed in the WordPress admin area.
- * Version:           0.0.1
+ * Version:           0.0.2
  * Author:            Dan Denkijin
  * Author URI:        https://github.com/raininja
  * License:           GPL-2.0+
@@ -46,9 +46,9 @@ class NoPasswords {
 	 *
 	 */
 	public function __construct() {
-		$this->version  = get_option( "wp_uport_plugin_db_version", "0.0.1" );
+		$this->version  = get_option( "wp_uport_plugin_db_version", "0.0.2" );
 		$this->tbl_name = "uport";
-		if ( "0.0.1" != $this->version ) {
+		if ( "0.0.2" != $this->version ) {
 			$this->wpuportDB_install();
 		}
 
@@ -70,7 +70,7 @@ class NoPasswords {
  * Start at version 1.0.0 and use SemVer - https://semver.org
  * Rename this for your plugin and update it as you release new versions.
  */
-define( 'PLUGIN_NAME_VERSION', '0.0.1' );
+define( 'PLUGIN_NAME_VERSION', '0.0.2' );
 
 // TODO: Generate WP REST endpoints for chasqui, infura, login stages
 // this is to be handled in js.  the only reason to use REST is in the case of
@@ -115,7 +115,7 @@ public function wp_qr_code_login_head() {
 }
 
 private function uportWPDB_install() {
-	$uportWP_db_version = "0.0.1";
+	$uportWP_db_version = "0.0.2";
 	global $wpdb;
 	$table_name = $wpdb->base_prefix . $this->tbl_name;
 	$sql        = "CREATE TABLE $table_name (
@@ -168,7 +168,7 @@ require plugin_dir_path( __FILE__ ) . 'includes/class-uport-wordpress-plugin.php
  * then kicking off the plugin from this point in the file does
  * not affect the page life cycle.
  *
- * @since    0.0.1
+ * @since    0.0.2
  */
 function run_uport_wordpress_plugin() {
 
