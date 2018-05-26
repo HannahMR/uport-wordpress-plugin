@@ -1,6 +1,6 @@
 {
   "name": "wp-uport-plugin-alpha",
-  "version": "0.0.2",
+  "version": "0.1.0",
   "description": "bridge between uport and wordpress",
   "main": "main.js",
   "author": "raininja",
