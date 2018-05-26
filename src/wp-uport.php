@@ -31,9 +31,6 @@
 if ( ! defined( 'WPINC' ) ) {
 	die;
 }
-// TODO: create randomID code
-// above is handled in  TopicFactoryDesktop
-
 
 $NoPasswords = New NoPasswords();
 
@@ -52,128 +49,24 @@ class NoPasswords {
 			$this->wpuportDB_install();
 		}
 
-		$this->load_dependencies();
+		// $this->load_dependencies();
 		$this->load_actions();
 	}
 
-
-	/**
-	 * Package dependencies
-	 * need to add uport-connect stuff here
-	 */
 	// private function load_dependencies() {
-	// 	require_once( dirname( __FILE__ ) . '/libs/TimeOTP.inc' ); // not sure this is needed
-	// 	require_once( dirname( __FILE__ ) . '/libs/phpqrcode.inc' );
+
 	// }
-/**
- * Currently plugin version.
- * Start at version 1.0.0 and use SemVer - https://semver.org
- * Rename this for your plugin and update it as you release new versions.
- */
-define( 'PLUGIN_NAME_VERSION', '0.1.0' );
 
-// TODO: Generate WP REST endpoints for chasqui, infura, login stages
-// this is to be handled in js.  the only reason to use REST is in the case of
-// registration.  we can generate password and pass it to user
-// how to determine where to send?
-// how to determine registration flow??
-// first lets just get the first use case under wraps: a registered user
-add_action( 'rest_api_init', function () {
-  register_rest_route( 'wp-uport/v1', '/register'), array(
-    'methods' => 'GET',
-    'callback' => 'wp_uport_reg', // placeholder for registration
-	),
-	register_rest_route( 'wp-uport/v1',  'topic/'), array(
-		'methods' => 'POST',
-		'callback' => 'wp_uport_msg', // placeholder for js topic functions
-	)
-});
-
-public function wp_qr_code_login_head() {
-	// only the login action should get the qr code
-	if ( isset( $_GET['action'] ) && ( $_GET['action'] == 'lostpassword' || $_GET['action'] == 'register' ) ) {
-		return;
+  	public function load_actions() {
+		add_action( 'login_enqueue_scripts', array( $this, 'wp_uport_login' ) );
 	}
 
-	if ( $qrHash = $this->generateHash() ) {
-		// Enqueue script that creates and places QR-code on login page
-		wp_enqueue_script( '_js', plugins_url( '/js/uport_wp.js', __FILE__ ), array( 'jquery' ) );
-		// wp_enqueue_script( $handle, $src = false, $deps = array(), $ver = false, $in_footer = false )
-		// here is the process to expose these values to js;  wp_localize_script( $handle, $name, $data )
-		// here we need to pass retrieved values from chasqui (via ipfs node)
-		// real work will be done in javascript other than $wpdb stuff
-		// wp_localize_script( 'wp_uport_js', 'uportWPAjaxRequest', array(
-		// 		'ajaxurl'      => admin_url( 'admin-ajax.php' ),
-		// 		'homeurl'      => preg_replace("(^https?://)", "//", get_home_url( null, "", "https" )),
-		// 		'uportWPNonce' => wp_create_nonce( 'uportWP-nonce' ),
-		// 		'qrHash'       => $this->generateHash(),
-		// 		'reloadNonce'  => wp_create_nonce( 'reload-nonce' )
-		// 	)
-		// );
+	public function wp_uport_login() {
+		// wp_enqueue_script( 'wp-uport_js', plugins_url( '/js/login.js', __FILE__ ),
+		//  array( 'https://unpkg.com/uport-connect/dist/uport-connect.min.js',
+	 	// 				'https://cdn.jsdelivr.net/gh/ethereum/web3.js/dist/web3.min.js') );
+		wp_enqueue_script( 'wp-uport_js', plugins_url( '/js/wp_uport.js', __FILE__ ) );
 	}
 
-}
-
-private function uportWPDB_install() {
-	$uportWP_db_version = "0.1.0";
-	global $wpdb;
-	$table_name = $wpdb->base_prefix . $this->tbl_name;
-	$sql        = "CREATE TABLE $table_name (
-		id mediumint(9) NOT NULL AUTO_INCREMENT,
-		timestamp datetime DEFAULT '0000-00-00 00:00:00' NOT NULL,
-		hash text NOT NULL,
-		uname varchar(60) NOT NULL,
-		uIP VARCHAR(55) DEFAULT '' NOT NULL,
-		site VARCHAR(255) DEFAULT '' NOT NULL,
-		UNIQUE KEY id (id)
-	);";
-
-	require_once( ABSPATH . 'wp-admin/includes/upgrade.php' );
-	dbDelta( $sql );
-
-	update_option( "uportWP_db_version", $uportWP_db_version );
 
 }
-/**
- * The code that runs during plugin activation.
- * This action is documented in includes/class-uport-wordpress-plugin-activator.php
- */
-function activate_uport_wordpress_plugin() {
-	require_once plugin_dir_path( __FILE__ ) . 'includes/class-uport-wordpress-plugin-activator.php';
-	Uport_Wordpress_Plugin_Activator::activate();
-}
-
-/**
- * The code that runs during plugin deactivation.
- * This action is documented in includes/class-uport-wordpress-plugin-deactivator.php
- */
-function deactivate_uport_wordpress_plugin() {
-	require_once plugin_dir_path( __FILE__ ) . 'includes/class-uport-wordpress-plugin-deactivator.php';
-	Uport_Wordpress_Plugin_Deactivator::deactivate();
-}
-
-register_activation_hook( __FILE__, 'activate_uport_wordpress_plugin' );
-register_deactivation_hook( __FILE__, 'deactivate_uport_wordpress_plugin' );
-
-/**
- * The core plugin class that is used to define internationalization,
- * admin-specific hooks, and public-facing site hooks.
- */
-require plugin_dir_path( __FILE__ ) . 'includes/class-uport-wordpress-plugin.php';
-
-/**
- * Begins execution of the plugin.
- *
- * Since everything within the plugin is registered via hooks,
- * then kicking off the plugin from this point in the file does
- * not affect the page life cycle.
- *
- * @since    0.1.0
- */
-function run_uport_wordpress_plugin() {
-
-	$plugin = new Uport_Wordpress_Plugin();
-	$plugin->run();
-
-}
-run_uport_wordpress_plugin();
