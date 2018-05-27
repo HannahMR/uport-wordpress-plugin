@@ -16,7 +16,7 @@ const buildFolder  = 'dist',
         build        : path.resolve(__dirname, buildFolder),
         src          : path.resolve(__dirname, sourceFolder),
         node_modules : path.resolve(__dirname, 'node_modules'),
-        index        : path.resolve(__dirname, `${sourceFolder}/js/login.js`),
+        index        : path.resolve(__dirname, `${sourceFolder}/js/login_may25a.js`),
         zipped       : path.join(__dirname, buildFolder),
 
       };

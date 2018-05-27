@@ -2,15 +2,14 @@
 import {Connect, ConnectCore, QRUtil, SimpleSigner, Credentials, MNID} from 'uport-connect'
 import Web3 from 'web3'
 
-// const Connect = window.uportconnect.Connect;
+// const Connect = window.uportconnect.Connect
 // d'application registry infos
 const uport = new Connect('uport-wp-plugin', {
   clientId: '2onpaDYj2R4RaUJGJcWe3AAWoQn5e4kwQzo',
   network: 'rinkeby',
-  signer: SimpleSigner('20c2eb928659799c4cf6e25177d0a68f26819774d30d0127d2aaa0beae84b258')
+  signer: SimpleSigner('20c2eb928659799c4cf6e25177d0a68f26819774d30d0127d2aaa0beae84b258'),
 })
-const web3 = uport.getWeb3() // uport-core method . . . not sure why the tutorial includes web3
-
+const web3 = uport.getWeb3()
 
 // Setup the simple Status contract - allows you to set and read a status string
 
@@ -39,7 +38,7 @@ const abi = [{
       }]
 
 const StatusContract = web3.eth.contract(abi);
-const statusInstance = StatusContract.at('0x70A804cCE17149deB6030039798701a38667ca3B');
+const statusInstance = StatusContract.at('0x70A804cCE17149deB6030039798701a38667ca3B')
 
       // State and render functions
 
@@ -54,7 +53,7 @@ const statusInstance = StatusContract.at('0x70A804cCE17149deB6030039798701a38667
         txHashSetStatus: "",
         sendToAddr: "",
         sendToVal: ""
-      };
+      }
 
       const render = function () {
         $('#uportId').innerHTML = globalState.uportId;
@@ -65,14 +64,14 @@ const statusInstance = StatusContract.at('0x70A804cCE17149deB6030039798701a38667
         $('#sendTo').value = globalState.sendToAddr;
         $('#amount').value = globalState.sendToVal;
         $('#currentStatus').innerHTML = globalState.currentStatus;
-      };
+      }
 
       const updateState = function () {
         globalState.sendToAddr = $('#sendTo').value;
         globalState.sendToVal = $('#amount').value;
         globalState.statusInput = $('#statusInput').value;
         console.log(globalState)
-      };
+      }
 
       ////////////////////////////////////////////////
 
@@ -83,11 +82,11 @@ const statusInstance = StatusContract.at('0x70A804cCE17149deB6030039798701a38667
 function ready() {
   // uPort connect
   const uportConnect = function() {
-    // console.log("clicked")
+    console.log("clicked")
     web3.eth.getCoinbase((error, address) => {
       if (error) { throw error }
       globalState.ethAddress = address
-      // console.log("address")
+      console.log("address")
       // This one is for display purposes - MNID encoding includes network
       // here we will need to include the wp cred info?
       // test runs will use a pre-registered user
@@ -146,10 +145,10 @@ function ready() {
   }
 
 // ready.onclick = uportConnect();
-window.uportConnect = uportConnect
+// window.uportConnect = uportConnect
 global.ready = ready
-// window.ready = ready
-ready(uportConnect)
+
+ready(window)
 
 
 // module.exports = uportConnect;

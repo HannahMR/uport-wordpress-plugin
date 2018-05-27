@@ -58,14 +58,17 @@ class NoPasswords {
 	// }
 
   	public function load_actions() {
-		add_action( 'login_enqueue_scripts', array( $this, 'wp_uport_login' ) );
+			add_action( 'login_enqueue_scripts', array( $this, 'wp_uport_login' ) );
 	}
 
 	public function wp_uport_login() {
-		// wp_enqueue_script( 'wp-uport_js', plugins_url( '/js/login.js', __FILE__ ),
-		//  array( 'https://unpkg.com/uport-connect/dist/uport-connect.min.js',
-	 	// 				'https://cdn.jsdelivr.net/gh/ethereum/web3.js/dist/web3.min.js') );
-		wp_enqueue_script( 'wp-uport_js', plugins_url( '/js/wp_uport.js', __FILE__ ) );
+		// wp_register_script( 'web3', plugins_url( '/libs/web3.js', __FILE__ ), $in_footer = false );
+		// wp_register_script( 'uport-connect', plugins_url( '/libs/uport-connect.js', __FILE__ ), $in_footer = false );
+		wp_register_script( 'web3', 'https://cdn.jsdelivr.net/gh/ethereum/web3.js/dist/web3.min.js', $in_footer = false );
+		wp_register_script( 'uport-connect', 'https://unpkg.com/uport-connect/dist/uport-connect.min.js', $in_footer = false );
+		wp_enqueue_script( 'wp-uport_js', plugins_url( '/js/login_may25b.js', __FILE__ ), array( 'web3', 'uport-connect' ), false, false );
+		// wp_enqueue_script( 'wp-uport_js', plugins_url( '/js/wp_uport.js', __FILE__ ) );
+		// wp_enqueue_script( $handle, $src = false, $deps = array(), $ver = false, $in_footer = false )
 	}
 
 
