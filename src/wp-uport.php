@@ -15,26 +15,26 @@
  * @wordpress-plugin
  * Plugin Name:       Uport WordPress Plugin
  * Plugin URI:        https://github.com/uport-project/uport-wordpress-plugin
- * Description:       This is a short description of what the plugin does. It's displayed in the WordPress admin area.
+ * Description:       This plugin is a bridge between WordPress and your decentralized world, through the uPort ecosystem.
  * Version:           0.1.0
  * Author:            Dan Denkijin
  * Author URI:        https://github.com/raininja
  * License:           GPL-2.0+
  * License URI:       http://www.gnu.org/licenses/gpl-2.0.txt
  * Text Domain:       uport-wordpress-plugin
- * Domain Path:       /languages
  */
 
 // this code is derivative of wp-qr-login-plugin
+// also contains code from jwt-wp-auth
 
 // If this file is called directly, abort.
 if ( ! defined( 'WPINC' ) ) {
 	die;
 }
 
-$NoPasswords = New NoPasswords();
+$uPortWordPress = New uPortWordPress();
 
-class NoPasswords {
+class uPortWordPress {
 	private $version;
 	private $tbl_name;
 
@@ -49,27 +49,47 @@ class NoPasswords {
 			$this->wpuportDB_install();
 		}
 
-		// $this->load_dependencies();
+		$this->load_dependencies();
 		$this->load_actions();
 	}
 
-	// private function load_dependencies() {
+	private function load_dependencies() {
+		require_once( dirname( __FILE__ ) . '/includes/api.inc';
+		require_once( dirname( __FILE__ ) . '/includes/auth.inc';
+		require_once( dirname( __FILE__ ) . '/includes/headers.inc';
+		require_once( dirname( __FILE__ ) . '/includes/jwt.inc';
 
-	// }
-
-  	public function load_actions() {
-			add_action( 'login_enqueue_scripts', array( $this, 'wp_uport_login' ) );
+		JWT\API\setup();
+		JWT\Auth\setup();
+		JWT\Headers\setup();
 	}
 
-	public function wp_uport_login() {
+  	public function load_actions() {
+			add_action( 'login_enqueue_scripts', array( $this, 'wp_uport_login_injectjs' ) );
+	}
+
+	public function wp_uport_login_injectjs() {
 		// wp_register_script( 'web3', plugins_url( '/libs/web3.js', __FILE__ ), $in_footer = false );
 		// wp_register_script( 'uport-connect', plugins_url( '/libs/uport-connect.js', __FILE__ ), $in_footer = false );
 		wp_register_script( 'web3', 'https://cdn.jsdelivr.net/gh/ethereum/web3.js/dist/web3.min.js', $in_footer = false );
 		wp_register_script( 'uport-connect', 'https://unpkg.com/uport-connect/dist/uport-connect.min.js', $in_footer = false );
-		wp_enqueue_script( 'wp-uport_js', plugins_url( '/js/login_may25b.js', __FILE__ ), array( 'web3', 'uport-connect' ), false, false );
+		wp_enqueue_script( 'wp_uport_js', plugins_url( '/js/login_may28.js', __FILE__ ), array( 'web3', 'uport-connect' ), false, false );
 		// wp_enqueue_script( 'wp-uport_js', plugins_url( '/js/wp_uport.js', __FILE__ ) );
 		// wp_enqueue_script( $handle, $src = false, $deps = array(), $ver = false, $in_footer = false )
 	}
 
+// for reference: here is the method to get user_id
+// $users = $wpdb->get_results( "SELECT user_id FROM $wpdb->usermeta WHERE meta_key = 'first_name' AND meta_value = 'Misha'" );
+
+
+	public function wp_uport_init() {
+		wp_localize_script( 'wp_uport_js', 'wp_uport_config' = array(
+			'appName'		=> bloginfo( 'name' ),
+			'appMNID' 	=> echo 'UPORT_APP_MNID', // plugin user/site admin will need to define UPORT_APP_MNID in wp-config.php
+			'signkey'		=> echo 'SIGNING_KEY', // admin to garnish SIGNING_KEY from uPort appManager and defin in wp-config.php
+			'ajaxurl'   => admin_url( 'admin-ajax.php' ),  // here as an example of the syntax
+			'homeurl'   => preg_replace("(^https?://)", "//", get_home_url( null, "", "https" ))
+		)
+	}
 
 }

@@ -4,7 +4,7 @@
 import Connect from 'uport-connect'
 // const Connect = window.uportconnect.Connect;
 // d'application registry infos
-const uport = new Connect('uport-wp-plugin', {
+const connect = new Connect('uport-wp-plugin', {
   // clientId: '2onpaDYj2R4RaUJGJcWe3AAWoQn5e4kwQzo',
   network: 'rinkeby'
 })

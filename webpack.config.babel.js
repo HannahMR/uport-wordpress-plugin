@@ -1,4 +1,4 @@
-// import fs                 from fs;
+import fs                 from 'fs';
 import path               from 'path';
 import CopyWebpackPlugin  from 'copy-webpack-plugin';
 import BrowserSyncPlugin  from 'browser-sync-webpack-plugin';
@@ -23,6 +23,11 @@ const buildFolder  = 'dist',
 
 //////////////////////// PLUGINS ////////////////////////
 /////////////////////////////////////////////////////////
+
+const  globalsPlugin = new webpack.DefinePlugin({
+  __DEV__: JSON.stringify(JSON.parse(process.env.BUILD_DEV || 'true')),
+  'process.env': { 'NODE_ENV': JSON.stringify('development') }
+});
 
 const CopyWebpackPluginOptions = ([
   // {from: path.resolve(__dirname, 'src/php') + '/**',
@@ -68,16 +73,13 @@ var pluginsList = isProd ? pluginsProd : pluginsDev;
 const javascript = [
   {
     test: /\.(js|jsx)$/,
-    loader: 'babel-loader',
-    exclude: /node_modules/
+    exclude: PATHS.node_modules,
+    loader: 'babel-loader'
   },
-  {
-    test: /\.json$/,
-    loader: 'json-loader'
-  },
-  query: {
-    presets: ['es2015']
-  }
+  // {
+  //   test: /\.json$/,
+  //   loader: 'json-loader'
+  // },
 ];
 
 
@@ -87,19 +89,27 @@ const javascript = [
 let libraryName = 'wp-uport'
 
 const webpackConfig = {
-  mode: 'production',
+  mode: 'development',
   entry: PATHS.index,
   output:  {
     library: libraryName,
     libraryTarget: 'umd',
+    umdNamedDefine: true,
     path: PATHS.zipped,
     filename: 'wp_uport.js' //this will change
   },
   module: {
-    rules: [javascript]
+    rules: javascript
   },
   resolve: {
     modules: [PATHS.src, 'node_modules'],
+    // extensions: ['.js', '.json']
+  },
+  node: {
+    console: false,
+    fs: 'empty',
+    net: 'empty',
+    tls: 'empty'
   },
   devtool: 'source-map',
   devServer: devServerOptions,
