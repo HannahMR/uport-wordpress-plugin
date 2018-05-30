@@ -518,7 +518,7 @@ function get_register_arguments() {
 	);
 
 	$args['email'] = array(
-		'description'       => esc_html__( 'A WordPress username.' ),
+		'description'       => esc_html__( 'Your email address.' ),
 		'type'              => 'string',
 		'required'          => true,
 		'validate_callback' => __NAMESPACE__ . '\string_arg_validate_callback',
@@ -526,7 +526,7 @@ function get_register_arguments() {
 	);
 
 	$args['password'] = array(
-		'description'       => esc_html__( 'A WordPress username.' ),
+		'description'       => esc_html__( 'Your WordPress password.' ),
 		'type'              => 'string',
 		'required'          => true,
 		'validate_callback' => __NAMESPACE__ . '\string_arg_validate_callback',

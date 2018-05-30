@@ -1,107 +1,56 @@
-//@flow
-// import {Connect, ConnectCore, QRUtil, SimpleSigner, Credentials, MNID} from 'uport-connect'
-// import Web3 from 'web3'
-import Connect from 'uport-connect'
-// const Connect = window.uportconnect.Connect;
-// d'application registry infos
-const connect = new Connect('uport-wp-plugin', {
-  // clientId: '2onpaDYj2R4RaUJGJcWe3AAWoQn5e4kwQzo',
-  network: 'rinkeby'
-})
-const web3 = uport.getWeb3() // uport-core method . . . not sure why the tutorial includes web3
+(function ready() {
 
-
-// Setup the simple Status contract - allows you to set and read a status string
-// later we will parse other info
-
-// const abi = [{
-//   "constant":false,
-//   "inputs":[{
-//     "name":"status",
-//     "type":"string"
-//   }],
-//     "name":"updateStatus",
-//     "outputs":[],
-//     "payable":false,"type":"function"
-//   },{
-//       "constant":false,
-//       "inputs":[{
-//         "name":"addr",
-//         "type":"address"
-//       }],
-//         "name":"getStatus",
-//         "outputs":[{
-//           "name":"",
-//           "type":"string"
-//         }],
-//         "payable":false,
-//         "type":"function"
-//       }]
-
-const StatusContract = web3.eth.contract(abi);
-const statusInstance = StatusContract.at('0x70A804cCE17149deB6030039798701a38667ca3B');
-
-      // State and render functions
-      //  exemplifies  how to set up state and render functions
-
-      // const $ = (selector) => document.querySelector(selector)
-      // let globalState = {
-      //   uportId: "",
-      //   ethAddress: "",
-      //   ethBalance: "",
-      //   currentStatus: "",
-      //   statusInput: "",
-      //   txHashSentEth: "",
-      //   txHashSetStatus: "",
-      //   sendToAddr: "",
-      //   sendToVal: ""
-      // };
-      //
-      // const render = function () {
-      //   $('#uportId').innerHTML = globalState.uportId;
-      //   $('#ethAddress').innerHTML = globalState.ethAddress;
-      //   $('#ethBalance').innerHTML = globalState.ethBalance;
-      //   $('#txHashSentEth').innerHTML = globalState.txHashSentEth;
-      //   $('#txHashSetStatus').innerHTML = globalState.txHashSetStatus;
-      //   $('#sendTo').value = globalState.sendToAddr;
-      //   $('#amount').value = globalState.sendToVal;
-      //   $('#currentStatus').innerHTML = globalState.currentStatus;
-      // };
-      //
-      // const updateState = function () {
-      //   globalState.sendToAddr = $('#sendTo').value;
-      //   globalState.sendToVal = $('#amount').value;
-      //   globalState.statusInput = $('#statusInput').value;
-      //   console.log(globalState)
-      // };
-
-      ////////////////////////////////////////////////
-
-
-      ////////////////////////////////////////////////
-
-
-function ready() {
-  // uPort connect
-  const uportConnect = function() {
-    connect.requestCredentials().then((credentials) => {
-      console.log(credentials)
+  const uportconnect = window.uportconnect
+  const appName = wp_uport_config.appName
+  const appMNID = wp_uport_config.appMNID
+  const connect = new uportconnect.Connect(
+    appName,
+    {
+      network: 'rinkeby',
     })
-  }
-  var injectButton = function(uportConnect) {
-    const loginForm = document.getElementById('loginform')
-    const buttondata = '<div class="button buttom-primary button-large" id="connectUportBtn" style="float: left" onclick="uportConnect()">Connect uPort</div>'
-    loginForm.insertAdjacentHTML('beforeend', buttondata)
-  }
+  const signer  = new uportconnect.SimpleSigner(wp_uport_config.signkey)
+  const credentials = new uportconnect.Credentials({
+    appName:  wp_uport_config.appName,   // $bloginfo of wp site
+    address:  wp_uport_config.appMNID,   // MNID of the application identity, defined in wp-config.php
+    signer:   wp_uport_config.signkey     // Signer object, private key should be defined in wp-config.php
+  })
 
-  if (document.readyState !== 'loading' &&
-    document.getElementsByClassName('login') != null &&
-    document.getElementsByClassName('wp-core-ui') != null){
-    injectButton()
-  } else {
-    document.addEventListener('DOMContentLoaded', injectButton)
+  // const uriHandler = (uri) => {
+  // // Creates a QR code URI, this is also a good place to you used any QR code library you prefer.
+  // const qrCode = uportconnect.QRUtil.getQRDataURI(uri)
+  // // A QR cod URI can then be used in a html img tag <img src="${qrCode}"/>
+  // const loginForm = document.getElementById('loginform')
+  // const qrcodedata = '<div img src="${qrCode}"/>'
+  // loginForm.insertAdjacentHTML('beforeend', qrcodedata)
+  //
+  // }
+  // credentials.createRequest({
+  //   requested: ['ID', 'user_email', 'user_login', 'user_pass'],
+  //   callbackUrl: "<public address>/callback",            // publicly available IP address for the callback
+  //   exp: Math.floor(new Date().getTime()/1000) + 300     // expiration for the request
+  // }).then( function(response) {
+  //   // see step 4...
+  //   })
+  // }
+  // const qrcodedata = '<div img src="${qrCode}"/>
+
+  const injectButton = () => {
+    const loginForm = document.getElementById('loginform')
+    const buttondata = '<div class="button buttom-primary button-large" id="connectUportBtn" style="float: right;background: #0085ba; border-color: #0073aa #006799 #006799; box-shadow: 0 1px 0 #006799; color: #fff; text-decoration: none; text-shadow: 0 -1px 1px #006799, 1px 0 1px #006799, 0 1px 1px #006799, -1px 0 1px #006799;">uPort Login </div>'
+    loginForm.insertAdjacentHTML('beforeend', buttondata)
+    let button_in = document.getElementById('connectUportBtn')
+    button_in.onclick = () => {
+      connect.requestCredentials().then((credentials) => {
+        console.log(credentials)
+      })
     }
   }
 
-// window.uportConnect = uportConnect
-global.ready = ready
+  if (document.readyState !== 'loading' &&
+  document.getElementsByClassName('login') != null &&
+  document.getElementsByClassName('wp-core-ui') != null){
+    injectButton()
+  } else {
+    document.addEventListener('DOMContentLoaded', injectButton)
+  }
+})();
