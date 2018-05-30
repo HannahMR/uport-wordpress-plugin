@@ -68,19 +68,7 @@ class uPortWordPress {
 			// add_action( 'login_enqueue_scripts', array( $this, 'wp_uport_login_injectjs' ) );
 			add_action( 'login_enqueue_scripts', array( $this, 'wp_uport_init' ) );
 
-	}
-
-	public function wp_uport_login_injectjs() {
-		// wp_register_script( 'web3', plugins_url( '/libs/web3.js', __FILE__ ), $in_footer = false );
-		// wp_register_script( 'uport-connect', plugins_url( '/libs/uport-connect.js', __FILE__ ), $in_footer = false );
-		// wp_register_script( 'web3', 'https://cdn.jsdelivr.net/gh/ethereum/web3.js/dist/web3.min.js', $in_footer = false );
-		// wp_register_script( 'uport-connect', 'https://unpkg.com/uport-connect/dist/uport-connect.min.js', $in_footer = false );
-		// wp_enqueue_script( 'wp_uport_js', plugins_url( '/js/login_may28.js', __FILE__ ), array( 'web3', 'uport-connect' ), false, false );
-		// wp_enqueue_script( 'wp-uport_js', plugins_url( '/js/wp_uport.js', __FILE__ ) );
-		// wp_enqueue_script( $handle, $src = false, $deps = array(), $ver = false, $in_footer = false )
-	}
-
-// for reference: here is the method to get user_id
+	// for reference: here is the method to get user_id
 // $users = $wpdb->get_results( "SELECT user_id FROM $wpdb->usermeta WHERE meta_key = 'first_name' AND meta_value = 'Misha'" );
 // TODO: enable multisite option
 // if ( is_multisite() ) {	$blogname = $GLOBALS['current_site']->site_name; } else {
@@ -89,7 +77,6 @@ class uPortWordPress {
 	public function wp_uport_init() {
 		wp_register_script( 'web3', 'https://cdn.jsdelivr.net/gh/ethereum/web3.js/dist/web3.min.js', $in_footer = false );
 		wp_register_script( 'uport-connect', 'https://unpkg.com/uport-connect/dist/uport-connect.min.js', $in_footer = false );
-		// wp_register_script( 'uport', 'https://unpkg.com/uport/dist/uport.js', $in_footer = false );
 		wp_enqueue_script( 'wp_uport_js', plugins_url( '/js/login.js', __FILE__ ), array( 'web3', 'uport-connect' ), $in_footer = false );
 		wp_localize_script( 'wp_uport_js', 'wp_uport_config', array(
 			'appName'		=> wp_specialchars_decode( get_option( 'blogname' ), ENT_QUOTES ),

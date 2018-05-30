@@ -8,7 +8,7 @@
     {
       network: 'rinkeby',
     })
-  const signer  = new uportconnect.SimpleSigner(wp_uport_config.signkey)
+  const Signer  = new uportconnect.SimpleSigner(wp_uport_config.signkey)
   const credentials = new uportconnect.Credentials({
     appName:  wp_uport_config.appName,   // $bloginfo of wp site
     address:  wp_uport_config.appMNID,   // MNID of the application identity, defined in wp-config.php
