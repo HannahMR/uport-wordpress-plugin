@@ -42,6 +42,7 @@
     button_in.onclick = () => {
       connect.requestCredentials().then((credentials) => {
         console.log(credentials)
+        return credentials 
       })
     }
   }
