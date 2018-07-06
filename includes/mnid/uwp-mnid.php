@@ -39,16 +39,11 @@ Class Encode extends uwp_MNID {
 
 private function checksum(&$payload) {
 
-  // $pubencpayload = hex2bin($payload->encode("hex", true));
-  // $pubhash  = $netid . hash('ripemd160', hash('sha256', $pubencpayload, true), true);
-  // $checksum = substr( hash('sha256', $pubhash, false), 0, 4);
   global $payload;
   $checksum = substr( Keccak::hash($payload), 0, 4);
   return $checksum;
 
 }
-// $recovered = "0x" . substr(Sha3::hash(hex2bin($publicKey['x'].$publicKey['y']), 256),24)
-// $recovered = "0x" . substr(Keccak::hash(substr(hex2bin($pubKey->encode("hex")), 1), 256), 24);
 
 
   //  from this javascript:
@@ -60,7 +55,6 @@ private function checksum(&$payload) {
 
 public function encode($network, $address) {
   global $encodedMnid, $payload;
-  // $payload = [(version number), $networkid($el2), $address($el2)];
   $payload = [bin2hex("01"), base_convert($network, 10, 16), hex2str($address)];
   $encodedMnid = $base58->encode(array_push(Keccak::hash($payload, 256))) . $checksum;
   return $encodedMnid;
