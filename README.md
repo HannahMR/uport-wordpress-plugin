@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 # uPort Wordpress Bridge
 
 this submission is simply using the boilerplate code from wppb.me with roadmap.  File structure is sure to change when real coding begins.
@@ -60,3 +61,7 @@ To encourage experiments token mechanics uPort's wants to provide simple interfa
 - [ ] Token Approve Form - ERC20.abi.approve
 
 When the forms are submitted a transaction signing request should either be sent to the uPort Mobile App (if logged in) or a QR code should be generated and displayed (if NOT logged in), so uPort Mobile App can scan the QR code and confirm the transaction requst. In other words, submitting these forms do not require interacting with the Wordpress database - everything is done using the Ethereum Blockchain.
+=======
+# uport-wordpress-plugin
+A Passwordless Login for uPort and Wordpress
+>>>>>>> ca8a66b00dcf5f54d573b8c816ad8cffeea89f21
