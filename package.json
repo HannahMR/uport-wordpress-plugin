@@ -1,0 +1,36 @@
+{
+  "name": "wp-uport-plugin-alpha",
+  "version": "0.1.0",
+  "description": "bridge between uport and wordpress",
+  "main": "main.js",
+  "author": "raininja",
+  "license": "MIT",
+  "dependencies": {
+    "uport-connect": "^0.7.3",
+    "web3": "^1.0.0-beta.34"
+  },
+  "devDependencies": {
+    "babel-cli": "^6.26.0",
+    "babel-core": "6",
+    "babel-loader": "^7.1.4",
+    "babel-plugin-import": "^1.7.0",
+    "babel-preset-es2015": "^6.24.1",
+    "babel-preset-flow": "^6.23.0",
+    "babel-register": "^6.26.0",
+    "browser-sync": "^2.24.4",
+    "browser-sync-webpack-plugin": "^2.2.2",
+    "clean-webpack-plugin": "^0.1.19",
+    "copy-webpack-plugin": "^4.5.1",
+    "flow-bin": "^0.71.0",
+    "mocha": "^5.1.1",
+    "path": "^0.12.7",
+    "webpack": "^4.8.3",
+    "webpack-cli": "^2.1.3",
+    "webpack-dev-server": "^3.1.4",
+    "webpack-hot-middleware": "^2.22.1",
+    "zip-webpack-plugin": "^3.0.0"
+  },
+  "scripts": {
+    "test": "node_modules/.bin/mocha --compilers js:babel-core/register --reporter spec"
+  }
+}

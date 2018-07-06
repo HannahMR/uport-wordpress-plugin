@@ -1,0 +1,12 @@
+{
+    "name": "raininja/uport-wordpress-plugin",
+    "description": "This plugin is a bridge between WordPress and your decentralized world, through the uPort ecosystem.",
+    "require": {
+        "firebase/php-jwt": "^5.0",
+        "kornrunner/keccak": "^1.0",
+        "simplito/elliptic-php": "^1.0",
+        "stephenhill/base58": "^1.1",
+        "php-di/php-di": "^6.0"
+    },
+    "license": "MIT"
+}
