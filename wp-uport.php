@@ -21,6 +21,8 @@
 // this code is derivative of wp-qr-login-plugin
 // also contains code from jwt-wp-auth
 
+// namespace UWP;
+
 // If this file is called directly, abort.
 if ( ! defined( 'WPINC' ) ) {
 	die;

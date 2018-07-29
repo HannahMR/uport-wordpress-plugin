@@ -86,7 +86,7 @@ class uPortWordPress {
   	}
 
   	private function load_dependencies() {
-  		require_once( dirname( __FILE__ ) . '/admin/uport-admin.inc');
+  		// require_once( dirname( __FILE__ ) . '/admin/uport-admin.inc');
   		// JWT functions
   		require_once( dirname( __FILE__ ) . '/jwt/api.inc');
   		require_once( dirname( __FILE__ ) . '/jwt/auth.inc');

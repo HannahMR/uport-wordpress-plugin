@@ -82,3 +82,5 @@ class uPortWordPress_Admin {
 	// }
 
 }
+
+new uPortWordPress_Admin();
