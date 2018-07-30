@@ -1,7 +1,7 @@
 <?php
-namespace JWT\API;
+namespace UportWP\Main\JWT\API;
 
-use JWT\JWT;
+use UportWP\Main\JWT\JWT;
 
 if ( ! defined( 'ABSPATH' ) ) {
 	exit; // Exit if accessed directly.

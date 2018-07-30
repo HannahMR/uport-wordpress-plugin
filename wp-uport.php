@@ -18,10 +18,11 @@
  * Text Domain:       uport-wordpress-plugin
  */
 
+ namespace UportWP;
+
 // this code is derivative of wp-qr-login-plugin
 // also contains code from jwt-wp-auth
 
-// namespace UWP;
 
 // If this file is called directly, abort.
 if ( ! defined( 'WPINC' ) ) {
@@ -29,7 +30,7 @@ if ( ! defined( 'WPINC' ) ) {
 }
 
 // Include the main uPortWordPress class.
-if ( ! class_exists( 'uPortWordPress' ) ) {
+if ( ! class_exists( '\UportWP\Main\uPortWordPress' ) ) {
 	include_once dirname( __FILE__ ) . '/includes/class-uportwordpress.php';
 }
 
@@ -42,7 +43,7 @@ if ( ! class_exists( 'uPortWordPress' ) ) {
  * @return uPortWordPress
  */
 function UWP() {
-	return uPortWordPress::instance();
+	return \UportWP\Main\uPortWordPress::instance();
 }
 
 // Global for backwards compatibility.

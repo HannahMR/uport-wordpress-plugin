@@ -1,5 +1,6 @@
 <?php
 
+namespace uPortWP\Main;
 /**
  * uPortWordPress setup
  *
@@ -93,9 +94,9 @@ class uPortWordPress {
   		require_once( dirname( __FILE__ ) . '/jwt/headers.inc');
   		require_once( dirname( __FILE__ ) . '/jwt/jwt.inc');
 
-  		JWT\API\setup();
-  		JWT\Auth\setup();
-  		JWT\Headers\setup();
+  		\UportWP\Main\JWT\API\setup();
+  		\UportWP\Main\JWT\Auth\setup();
+  		\UportWP\Main\JWT\Headers\setup();
   	}
 
     public function load_actions() {

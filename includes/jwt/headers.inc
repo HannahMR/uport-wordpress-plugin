@@ -1,5 +1,5 @@
 <?php
-namespace JWT\Headers;
+namespace UportWP\Main\JWT\Headers;
 
 if ( ! defined( 'ABSPATH' ) ) {
 	exit; // Exit if accessed directly.

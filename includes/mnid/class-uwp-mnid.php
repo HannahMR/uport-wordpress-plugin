@@ -2,7 +2,7 @@
 
 require_once dirname( __FILE__ ) .  ('vendor/autoload.php');
 
-namespace UWP\MNID;
+namespace UportWP\Main\MNID;
 
 class uwp_MNID {
 
