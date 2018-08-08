@@ -1,6 +1,8 @@
 <?php
 namespace UportWP\Main\JWT\JWT;
 
+use Elliptic\EC;
+use kornrunner\Keccak;
 use UportWP\Main\JWT\Headers;
 
 if ( ! defined( 'ABSPATH' ) ) {
@@ -8,28 +10,28 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 /**
- * Function create a valide json web token for the input user account.
+ * Function create a valid json web token for the input user account.
  *
  * @param [object] $user WP User Object.
  * @return object
  */
 function create( $user ) {
 	$expiration  = defined( 'JWT_EXPIRATION' ) && JWT_EXPIRATION ? JWT_EXPIRATION : ( 24 * 60 * 60 );
-	$token_id    = base64_encode( random_bytes( 32 ) );
+	$token_id    = base64_encode( random_bytes( 32 ) ); // ?? unneeded ??
 	$issued_at   = time();
-	$not_before  = $issued_at + 10;
-	$expire      = $not_before + $expiration;
-	$server_name = gethostname();
+	$not_before  = $issued_at + 10; // ?? unneeded ??
+	$expire      = $not_before + $expiration; // depends on $not_before
+	$server_name = gethostname();  // here we will need to create an MNID
 
 	/*
 	 * Create the token as an array
 	 */
 	$data = [
-		'iat'  => $issued_at,
-		'jti'  => $token_id,
-		'iss'  => $server_name,
-		'nbf'  => $not_before,
-		'exp'  => $expire,
+		'iat'  => $issued_at, // time of issuance, required
+		'iss'  => $server_name, // The MNID of the signing identity, required
+		'exp'  => $expire, // Expiration time of JWT
+		'jti'  => $token_id, // ?? unneeded ??
+		'nbf'  => $not_before, // ?? unneeded ??
 		'data' => [
 			'userId' => is_object( $user ) ? $user->ID : $user,
 		],
@@ -54,7 +56,7 @@ function create( $user ) {
 	 *
 	 * The output string can be validated at http://jwt.io/
 	 */
-	$jwt = \Firebase\JWT\JWT::encode(
+	$jwt = Keccak::encode(
 		$data,
 		$secret_key,
 		'RS256'
@@ -78,7 +80,8 @@ function validate( $header ) {
 			/*
 			 * decode the jwt using the key from config
 			 */
-			$token = \Firebase\JWT\JWT::decode( $jwt, JWT_SECRET_TOKEN, array( 'RS256' ) );
+			// $token = \Firebase\JWT\JWT::decode( $jwt, JWT_SECRET_TOKEN, array( 'RS256' ) );
+			$token = \Keccak::decode( $jwt, JWT_SECRET_TOKEN, array( 'RS256' ) );
 
 			return $token;
 

@@ -1,9 +1,9 @@
 <? php
 
-use UportWP;
+use UportWP\Main\MNID;
 use PHPUnit\Framework\TestCase;
 
-require_once dirname( __FILE__ ) . ('/includes/mnid/uwp-mnid.php');
+// require_once dirname( __FILE__ ) . ('/includes/mnid/class-uwp-mnid.php');
 
 class uwpMNIDTestCase extends TestCase {
 
@@ -11,7 +11,9 @@ class uwpMNIDTestCase extends TestCase {
   public function test_isMNID() {
 
     $encodedMNID = "2oxQcKpgT7JAG2MEGydPPLZijtaAH4aKbVK";
-    $this -> assertTrue( $this::$encodedMNID
+    $checkMNID = $this -> class_instance -> isMNID($encodedMNID);
+    assertTrue( $checkMNID );
   }
 
 }
+?>
